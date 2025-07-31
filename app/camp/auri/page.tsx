@@ -8,6 +8,29 @@ import { Calendar, MapPin, Users, Clock, ArrowLeft, Instagram, Youtube, Facebook
 export default function AuriCampPage() {
   const [activeTab, setActiveTab] = useState('overview')
 
+  // 모집 상태 설정 - 이 부분만 수정하면 됩니다!
+  const recruitmentStatus = {
+    type: 'closed', // 'recruiting' | 'closed' | 'full' | 'upcoming'
+    text: '모집 마감',
+    color: 'orange' // 'green' | 'red' | 'orange' | 'blue'
+  }
+
+  // 상태별 스타일 설정
+  const getStatusStyle = () => {
+    switch (recruitmentStatus.color) {
+      case 'green':
+        return 'bg-green-900 border-green-600 text-green-400'
+      case 'red':
+        return 'bg-red-900 border-red-600 text-red-400'
+      case 'orange':
+        return 'bg-orange-900 border-orange-600 text-orange-400'
+      case 'blue':
+        return 'bg-blue-900 border-blue-600 text-blue-400'
+      default:
+        return 'bg-green-900 border-green-600 text-green-400'
+    }
+  }
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
@@ -26,7 +49,6 @@ export default function AuriCampPage() {
               </div>
               <span className="text-xl font-medium tracking-wide text-white">AURI COMMUNITY</span>
             </Link>
-            
             <div className="hidden md:flex items-center space-x-8">
               <Link href="/about" className="text-gray-300 hover:text-white transition-colors text-sm">ABOUT</Link>
               <Link href="/connect-worship" className="text-gray-300 hover:text-white transition-colors text-sm">CONNECT WORSHIP</Link>
@@ -59,27 +81,54 @@ export default function AuriCampPage() {
               하나님의 사랑 안에서 하나 되는 특별한 경험을 통해 청소년들의 영적 성장과 공동체 경험을 제공하는 캠프입니다.
             </p>
             
+            {/* Camp Date & Status */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
+              <div className="bg-gray-900 rounded-lg px-6 py-3 border border-gray-800">
+                <div className="flex items-center space-x-2">
+                  <Calendar className="w-5 h-5 text-blue-400" />
+                  <span className="text-white font-medium">미정</span>
+                </div>
+              </div>
+              <div className={`rounded-lg px-6 py-3 border ${getStatusStyle()}`}>
+                <div className="flex items-center space-x-2">
+                  {recruitmentStatus.type === 'recruiting' && (
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  )}
+                  {recruitmentStatus.type === 'closed' && (
+                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                  )}
+                  {recruitmentStatus.type === 'full' && (
+                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                  )}
+                  {recruitmentStatus.type === 'upcoming' && (
+                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                  )}
+                  <span className="font-medium">{recruitmentStatus.text}</span>
+                </div>
+              </div>
+            </div>
+            
             {/* Basic Info Cards */}
             <div className="grid md:grid-cols-4 gap-4 mt-8">
               <div className="bg-gray-900 rounded-lg p-4 text-center border border-gray-800">
                 <Calendar className="w-6 h-6 text-blue-400 mx-auto mb-2" />
                 <div className="text-sm text-gray-400">기간</div>
-                <div className="text-white font-medium">2박 3일</div>
+                <div className="text-white font-medium">2박 3일(여름/겨울)</div>
               </div>
               <div className="bg-gray-900 rounded-lg p-4 text-center border border-gray-800">
                 <MapPin className="w-6 h-6 text-green-400 mx-auto mb-2" />
                 <div className="text-sm text-gray-400">장소</div>
-                <div className="text-white font-medium">강원도 평창</div>
+                <div className="text-white font-medium">미정</div>
               </div>
               <div className="bg-gray-900 rounded-lg p-4 text-center border border-gray-800">
                 <Users className="w-6 h-6 text-purple-400 mx-auto mb-2" />
                 <div className="text-sm text-gray-400">대상</div>
-                <div className="text-white font-medium">초4 ~ 고3</div>
+                <div className="text-white font-medium">중1 ~ 고3</div>
               </div>
               <div className="bg-gray-900 rounded-lg p-4 text-center border border-gray-800">
                 <Clock className="w-6 h-6 text-orange-400 mx-auto mb-2" />
                 <div className="text-sm text-gray-400">모집</div>
-                <div className="text-white font-medium">120명</div>
+                <div className="text-white font-medium">미정</div>
               </div>
             </div>
           </div>
@@ -91,13 +140,13 @@ export default function AuriCampPage() {
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex space-x-8 overflow-x-auto">
             {[
-              { id: 'overview', label: '캠프 소개' },
+              { id: 'overview', label: '소개' },
               { id: 'program', label: '프로그램' },
-              { id: 'schedule', label: '일정' },
               { id: 'instructors', label: '강사소개' },
+              { id: 'schedule', label: '일정' },
               { id: 'location', label: '장소' },
               { id: 'poster', label: '포스터' },
-              { id: 'info', label: '참가 안내' }
+              { id: 'info', label: '캠프안내' }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -121,27 +170,37 @@ export default function AuriCampPage() {
           {/* Overview Tab */}
           {activeTab === 'overview' && (
             <div className="space-y-12">
-              <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="space-y-6">
+              <div className="flex flex-col lg:flex-row gap-8 items-start">
+                <div className="lg:w-2/3 space-y-6">
                   <h2 className="text-2xl font-bold text-white">AURI 캠프</h2>
                   <div className="space-y-4">
                     <p className="text-gray-300 leading-relaxed">
-                      AURI 캠프는 청소년이 하나님의 사랑 안에서 영적으로 성장할 수 있도록 돕는 특별한 교육 프로그램입니다.
-                      전문적이고 체계적인 커리큘럼을 통해 신앙 안에서의 인격 형성과 리더십 개발을 동시에 추구합니다.
-                    </p>
-                    <p className="text-gray-300 leading-relaxed">
-                      2025년 현재 전국 150여 개 교회에서 약 5,000여 명의 청소년들이 참여하고 있습니다.
-                      올바른 신앙 가치관을 바탕으로 청소년들이 사회의 건전한 리더로 성장할 수 있도록 지원합니다.
+                      AURI는 ‘놀이’ 또한 예배로 나아가는 소중한 통로라고 믿습니다.
+                      <br/>
+                      다음세대가 진정한 예배자로 자라나기 위해서는
+                      <br/>무엇보다 마음이 열리고, 관계가 연결되어야 합니다.
+                      <br/>
+                      <br/>함께 웃고 뛰는 놀이는
+                      <br/>예수님을 사랑하는 친구들과 자연스럽게 연결되는 시작이며,
+                      <br/>복음이 마음 깊숙이 흘러가는 통로가 됩니다.
+                      <br/>
+                      <br/>AURI는 이 시간을 통해
+                      <br/> 다음세대가 예배를 배우고, 예배를 삶으로 이어가며,
+                      <br/>하나님 안에서 참된 만족과 기쁨을 경험하도록 돕습니다.
+                      <br/>
+                      <br/>우리는 단순히 노는 것이 아니라,
+                      <br/>놀이로 마음을 열고, 예배로 마음을 드리는
+                      <br/>다음세대를 위한 캠프를 만들어갑니다.
                     </p>
                   </div>
                 </div>
-                <div>
+                <div className="lg:w-3/5">
                   <Image
                     src="/images/auri-camp-main.jpg"
                     alt="AURI 캠프"
-                    width={500}
-                    height={350}
-                    className="w-full rounded-lg object-cover"
+                    width={900}
+                    height={700}
+                    className="w-full h-[470px] rounded-lg object-cover"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = '/placeholder.svg?height=350&width=500&text=AURI+캠프';
@@ -459,8 +518,8 @@ export default function AuriCampPage() {
                   <h3 className="text-lg font-semibold text-white mb-4">캠프 기본 정보</h3>
                   <div className="space-y-3">
                     <div className="flex justify-between py-2 border-b border-gray-800">
-                      <span className="text-gray-400">개최 일정</span>
-                      <span className="text-white">2025년 7월 15일 ~ 17일</span>
+                      <span className="text-gray-400">개최 일정(여름/겨울)</span>
+                      <span className="text-white">미정</span>
                     </div>
                     <div className="flex justify-between py-2 border-b border-gray-800">
                       <span className="text-gray-400">캠프 기간</span>
@@ -468,15 +527,15 @@ export default function AuriCampPage() {
                     </div>
                     <div className="flex justify-between py-2 border-b border-gray-800">
                       <span className="text-gray-400">참가 대상</span>
-                      <span className="text-white">초등학교 4학년 ~ 고등학교 3학년</span>
+                      <span className="text-white">중학교 1학년 ~ 고등학교 3학년</span>
                     </div>
                     <div className="flex justify-between py-2 border-b border-gray-800">
                       <span className="text-gray-400">모집 정원</span>
-                      <span className="text-white">120명 (선착순)</span>
+                      <span className="text-white">미정</span>
                     </div>
                     <div className="flex justify-between py-2">
                       <span className="text-gray-400">참가비</span>
-                      <span className="text-white font-semibold">180,000원</span>
+                      <span className="text-white font-semibold">미정</span>
                     </div>
                   </div>
                 </div>
@@ -487,7 +546,7 @@ export default function AuriCampPage() {
                     <div>
                       <h4 className="text-white font-medium mb-2">Q. 캠프 참가 조건이 있나요?</h4>
                       <p className="text-gray-400 text-sm leading-relaxed pl-4">
-                        A. 초등학교 4학년부터 고등학교 3학년까지 참가 가능합니다. 신앙 유무는 상관없으며, 캠프에 대한 열린 마음과 적극적인 참여 의지만 있으면 됩니다.
+                        A. 중학교 1학년부터 고등학교 3학년까지 참가 가능합니다. 신앙 유무는 상관없으며, 캠프에 대한 열린 마음과 적극적인 참여 의지만 있으면 됩니다.
                       </p>
                     </div>
                     <div>
@@ -499,7 +558,7 @@ export default function AuriCampPage() {
                     <div>
                       <h4 className="text-white font-medium mb-2">Q. 캠프비는 무엇이 포함되나요?</h4>
                       <p className="text-gray-400 text-sm leading-relaxed pl-4">
-                        A. 180,000원에 2박 3일 숙박비, 6회 식사비, 모든 프로그램 비용, 교재비, 기념품이 포함됩니다.
+                        A. 캠프비에는 2박 3일 숙박비, 6회 식사비, 모든 프로그램 비용 등이 포함됩니다.
                       </p>
                     </div>
                   </div>
@@ -544,18 +603,38 @@ export default function AuriCampPage() {
             <div>
               <h4 className="text-white mb-4 text-sm">CONTACT</h4>
               <div className="space-y-2 text-gray-400 text-sm">
-                <p>서울시 강남구 테헤란로 427</p>
                 <p>02-1234-5678</p>
-                <p>info@auricommunity.org</p>
+                <p>auricommunity@gmail.com</p>
               </div>
             </div>
             
             <div>
-              <h4 className="text-white mb-4 text-sm">SOCIAL</h4>
-              <div className="flex space-x-3">
-                <Instagram className="w-4 h-4" />
-                <Youtube className="w-4 h-4" />
-                <Facebook className="w-4 h-4" />
+              <h4 className="font-light text-white mb-6 text-sm tracking-wide">SOCIAL</h4>
+              <div className="flex space-x-4">
+                <a 
+                  href="https://www.instagram.com/auri_community/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+                <a 
+                  href="https://www.youtube.com/@AURICOMMUNITY" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
+                >
+                  <Youtube className="w-4 h-4" />
+                </a>
+                <a 
+                  href="https://www.facebook.com/p/%EC%95%84%EC%9A%B0%EB%A6%AC%EA%B3%B5%EB%8F%99%EC%B2%B4-100077341464707/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
+                >
+                  <Facebook className="w-4 h-4" />
+                </a>
               </div>
             </div>
           </div>

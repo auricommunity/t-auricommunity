@@ -746,42 +746,41 @@ export default function AboutPage() {
               <div>
                 <h4 className="font-light text-white mb-6 text-sm tracking-wide">CONTACT</h4>
                 <div className="space-y-2 text-white/60 text-sm font-light">
-                  <p>서울시 강남구 테헤란로 123</p>
                   <p>02-1234-5678</p>
-                  <p>info@auricommunity.org</p>
+                  <p>auricommunity@gmail.com</p>
                 </div>
               </div>
             </FadeInAnimation>
             <FadeInAnimation delay={600}>
-              <div>
-                <h4 className="font-light text-white mb-6 text-sm tracking-wide">SOCIAL</h4>
-                <div className="flex space-x-4">
-                  <a 
-                    href="https://instagram.com/auri_community" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
-                  >
-                    <Instagram className="w-4 h-4" />
-                  </a>
-                  <a 
-                    href="https://youtube.com/@auricommunity" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
-                  >
-                    <Youtube className="w-4 h-4" />
-                  </a>
-                  <a 
-                    href="https://facebook.com/auricommunity" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
-                  >
-                    <Facebook className="w-4 h-4" />
-                  </a>
-                </div>
+            <div>
+              <h4 className="font-light text-white mb-6 text-sm tracking-wide">SOCIAL</h4>
+              <div className="flex space-x-4">
+                <a 
+                  href="https://www.instagram.com/auri_community/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+                <a 
+                  href="https://www.youtube.com/@AURICOMMUNITY" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
+                >
+                  <Youtube className="w-4 h-4" />
+                </a>
+                <a 
+                  href="https://www.facebook.com/p/%EC%95%84%EC%9A%B0%EB%A6%AC%EA%B3%B5%EB%8F%99%EC%B2%B4-100077341464707/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
+                >
+                  <Facebook className="w-4 h-4" />
+                </a>
               </div>
+            </div>
             </FadeInAnimation>
           </div>
           <FadeInAnimation delay={800}>
