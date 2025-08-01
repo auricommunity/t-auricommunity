@@ -54,6 +54,9 @@ function AnimatedElement({ children, delay = 0, className = "" }: {
 }
 
 export default function ConnectWorshipPage() {
+  // ===== 블로그 기능 비활성화 =====
+  const BLOG_ENABLED = false // true로 변경하면 블로그 기능 활성화
+  
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // ===== Hero Section 미디어 설정 =====
@@ -101,68 +104,124 @@ export default function ConnectWorshipPage() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-black/80 backdrop-blur-sm z-50">
+      <nav className="fixed top-0 w-full bg-transparent backdrop-blur-sm z-50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-3">
               <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo.png" // 로고 이미지 경로
                   alt="AURI COMMUNITY 로고"
                   width={32}
                   height={32}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span className="text-xl font-light tracking-wider">AURI COMMUNITY</span>
+              <span className="text-xl font-light tracking-wider">
+                AURI COMMUNITY
+              </span>
             </Link>
-            
             <div className="hidden md:flex items-center space-x-12">
-              <Link href="/about" className="text-white/70 hover:text-white transition-colors duration-300 text-sm font-light tracking-wide">
+              <Link
+                href="/about"
+                className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+              >
                 ABOUT
               </Link>
-              <Link href="/connect-worship" className="text-white font-light text-sm tracking-wide">
+              <Link
+                href="/connect-worship"
+                className="text-white hover:text-white/80 transition-all duration-300 text-sm font-light tracking-wide"
+              >
                 CONNECT WORSHIP
               </Link>
-              <Link href="/camp" className="text-white/70 hover:text-white transition-colors duration-300 text-sm font-light tracking-wide">
+              <Link
+                href="/camp"
+                className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+              >
                 CAMP
               </Link>
-              <Link href="/blog" className="text-white/70 hover:text-white transition-colors duration-300 text-sm font-light tracking-wide">
-                BLOG
-              </Link>
-              <Link href="/donation" className="text-white/70 hover:text-white transition-colors duration-300 text-sm font-light tracking-wide">
+              {/* BLOG - 비활성화됨 */}
+              {BLOG_ENABLED ? (
+                <Link
+                  href="/blog"
+                  className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                >
+                  BLOG
+                </Link>
+              ) : (
+                <span className="text-white/30 text-sm font-light tracking-wide cursor-not-allowed">
+                  BLOG (준비 중)
+                </span>
+              )}
+              <Link
+                href="/donation"
+                className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+              >
                 후원
               </Link>
             </div>
-
+            
             {/* 모바일 메뉴 버튼 */}
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 text-white hover:text-white/80 transition-colors"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-              </svg>
+              {mobileMenuOpen ? (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
             </button>
           </div>
-
+          
           {/* 모바일 메뉴 */}
           {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4 border-t border-white/10">
               <div className="flex flex-col space-y-4 pt-4">
-                <Link href="/about" className="text-white/70 hover:text-white transition-colors duration-300 text-sm font-light tracking-wide">
+                <Link
+                  href="/about"
+                  className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   ABOUT
                 </Link>
-                <Link href="/connect-worship" className="text-white font-light text-sm tracking-wide">
+                <Link
+                  href="/connect-worship"
+                  className="text-white hover:text-white/80 transition-all duration-300 text-sm font-light tracking-wide"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   CONNECT WORSHIP
                 </Link>
-                <Link href="/camp" className="text-white/70 hover:text-white transition-colors duration-300 text-sm font-light tracking-wide">
+                <Link
+                  href="/camp"
+                  className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   CAMP
                 </Link>
-                <Link href="/blog" className="text-white/70 hover:text-white transition-colors duration-300 text-sm font-light tracking-wide">
-                  BLOG
-                </Link>
-                <Link href="/donation" className="text-white/70 hover:text-white transition-colors duration-300 text-sm font-light tracking-wide">
+                {/* BLOG - 비활성화됨 */}
+                {BLOG_ENABLED ? (
+                  <Link
+                    href="/blog"
+                    className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    BLOG
+                  </Link>
+                ) : (
+                  <span className="text-white/30 text-sm font-light tracking-wide cursor-not-allowed">
+                    BLOG (준비 중)
+                  </span>
+                )}
+                <Link
+                  href="/donation"
+                  className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   후원
                 </Link>
               </div>
@@ -424,30 +483,49 @@ export default function ConnectWorshipPage() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <span className="text-xl font-light tracking-wider">AURI COMMUNITY</span>
+                <span className="text-xl font-light tracking-wider">
+                  AURI COMMUNITY
+                </span>
               </div>
-              <p className="text-white/60 leading-relaxed font-light text-sm">하나님의 사랑으로 하나 되는 공동체</p>
+              <p className="text-white/60 leading-relaxed font-light text-sm">
+                하나님의 사랑으로 하나 되는 공동체
+              </p>
             </div>
-            
             <div>
               <h4 className="font-light text-white mb-6 text-sm tracking-wide">MENU</h4>
               <div className="space-y-3">
-                <Link href="/about" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">ABOUT</Link>
-                <Link href="/connect-worship" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">CONNECT WORSHIP</Link>
-                <Link href="/camp" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">CAMP</Link>
-                <Link href="/blog" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">BLOG</Link>
-                <Link href="/donation" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">후원</Link>
+                <Link href="/about" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                  ABOUT
+                </Link>
+                <Link href="/connect-worship" className="block text-white hover:text-white/60 transition-colors duration-300 text-sm font-light">
+                  CONNECT WORSHIP
+                </Link>
+                <Link href="/camp" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                  CAMP
+                </Link>
+                {/* BLOG - 비활성화됨 */}
+                {BLOG_ENABLED ? (
+                  <Link href="/blog" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                    BLOG
+                  </Link>
+                ) : (
+                  <span className="block text-white/30 text-sm font-light cursor-not-allowed">
+                    BLOG (준비 중)
+                  </span>
+                )}
+                <Link href="/donation" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                  후원
+                </Link>
               </div>
             </div>
-            
             <div>
               <h4 className="font-light text-white mb-6 text-sm tracking-wide">CONTACT</h4>
               <div className="space-y-2 text-white/60 text-sm font-light">
+                <p>서울시 강남구 테헤란로 123</p>
                 <p>02-1234-5678</p>
                 <p>auricommunity@gmail.com</p>
               </div>
             </div>
-            
             <div>
               <h4 className="font-light text-white mb-6 text-sm tracking-wide">SOCIAL</h4>
               <div className="flex space-x-4">
@@ -478,7 +556,6 @@ export default function ConnectWorshipPage() {
               </div>
             </div>
           </div>
-          
           <div className="border-t border-white/10 mt-12 pt-8 text-center">
             <p className="text-white/40 text-sm font-light">&copy; 2025 AURI & AURI COMMUNITY. All rights reserved.</p>
           </div>

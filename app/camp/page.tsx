@@ -6,6 +6,9 @@ import Image from 'next/image'
 import { Instagram, Youtube, Facebook, X } from 'lucide-react'
 
 export default function CampPage() {
+  // ===== 블로그 기능 비활성화 =====
+  const BLOG_ENABLED = false // true로 변경하면 블로그 기능 활성화
+  
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showApplicationModal, setShowApplicationModal] = useState(false)
   const [showInquiryModal, setShowInquiryModal] = useState(false)
@@ -114,12 +117,19 @@ export default function CampPage() {
               >
                 CAMP
               </Link>
-              <Link
-                href="/blog"
-                className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
-              >
-                BLOG
-              </Link>
+              {/* BLOG - 비활성화됨 */}
+              {BLOG_ENABLED ? (
+                <Link
+                  href="/blog"
+                  className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                >
+                  BLOG
+                </Link>
+              ) : (
+                <span className="text-white/30 text-sm font-light tracking-wide cursor-not-allowed">
+                  BLOG (준비 중)
+                </span>
+              )}
               <Link
                 href="/donation"
                 className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
@@ -170,13 +180,20 @@ export default function CampPage() {
                 >
                   CAMP
                 </Link>
-                <Link
-                  href="/blog"
-                  className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  BLOG
-                </Link>
+                {/* BLOG - 비활성화됨 */}
+                {BLOG_ENABLED ? (
+                  <Link
+                    href="/blog"
+                    className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    BLOG
+                  </Link>
+                ) : (
+                  <span className="text-white/30 text-sm font-light tracking-wide cursor-not-allowed">
+                    BLOG (준비 중)
+                  </span>
+                )}
                 <Link
                   href="/donation"
                   className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
@@ -610,8 +627,14 @@ export default function CampPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center">
-                  <span className="text-sm font-bold">AC</span>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
+                  <Image
+                    src="/images/logo.png"
+                    alt="AURI COMMUNITY 로고"
+                    width={32}
+                    height={32}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <span className="text-xl font-light tracking-wider">
                   AURI COMMUNITY
@@ -630,12 +653,19 @@ export default function CampPage() {
                 <Link href="/connect-worship" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
                   CONNECT WORSHIP
                 </Link>
-                <Link href="/camp" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                <Link href="/camp" className="block text-white hover:text-white/60 transition-colors duration-300 text-sm font-light">
                   CAMP
                 </Link>
-                <Link href="/blog" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
-                  BLOG
-                </Link>
+                {/* BLOG - 비활성화됨 */}
+                {BLOG_ENABLED ? (
+                  <Link href="/blog" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                    BLOG
+                  </Link>
+                ) : (
+                  <span className="block text-white/30 text-sm font-light cursor-not-allowed">
+                    BLOG (준비 중)
+                  </span>
+                )}
                 <Link href="/donation" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
                   후원
                 </Link>
@@ -652,20 +682,35 @@ export default function CampPage() {
             <div>
               <h4 className="font-light text-white mb-6 text-sm tracking-wide">SOCIAL</h4>
               <div className="flex space-x-4">
-                <button className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300">
-                  <span className="text-xs">IG</span>
-                </button>
-                <button className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300">
-                  <span className="text-xs">YT</span>
-                </button>
-                <button className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300">
-                  <span className="text-xs">FB</span>
-                </button>
+                <a 
+                  href="https://www.instagram.com/auri_community/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+                <a 
+                  href="https://www.youtube.com/@AURICOMMUNITY" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
+                >
+                  <Youtube className="w-4 h-4" />
+                </a>
+                <a 
+                  href="https://www.facebook.com/p/%EC%95%84%EC%9A%B0%EB%A6%AC%EA%B3%B5%EB%8F%99%EC%B2%B4-100077341464707/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
+                >
+                  <Facebook className="w-4 h-4" />
+                </a>
               </div>
             </div>
           </div>
           <div className="border-t border-white/10 mt-12 pt-8 text-center">
-            <p className="text-white/40 text-sm font-light">&copy; 2024 AURI COMMUNITY. All rights reserved.</p>
+            <p className="text-white/40 text-sm font-light">&copy; 2025 AURI & AURI COMMUNITY. All rights reserved.</p>
           </div>
         </div>
       </footer>

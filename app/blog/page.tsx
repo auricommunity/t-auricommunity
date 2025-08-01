@@ -7,6 +7,9 @@ import { Instagram, Youtube, Facebook } from 'lucide-react'
 import { BlogPost } from '../api/blog/route'
 
 export default function BlogPage() {
+  // ===== 블로그 기능 비활성화 =====
+  const BLOG_ENABLED = false // true로 변경하면 블로그 기능 활성화
+  
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
@@ -15,10 +18,28 @@ export default function BlogPage() {
   const categories = ['all', '리뷰', '인터뷰', '이벤트']
 
   useEffect(() => {
-    fetchPosts()
+    if (BLOG_ENABLED) {
+      fetchPosts()
+    }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white/60">로딩 중...</p>
+        </div>
+      </div>
+    )
+  }
   }, [])
 
   const fetchPosts = async () => {
+    if (!BLOG_ENABLED) {
+      setLoading(false)
+      return
+    }
+    
     try {
       const response = await fetch('/api/blog')
       const data = await response.json()
@@ -42,12 +63,29 @@ export default function BlogPage() {
     })
   }
 
-  if (loading) {
+  // 블로그 비활성화 상태일 때 표시할 메시지
+  if (!BLOG_ENABLED) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white/60">로딩 중...</p>
+        <div className="max-w-md mx-auto px-6 text-center">
+          <div className="mb-8">
+            <div className="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2m-3-3a2 2 0 01-2-2V4a2 2 0 00-2-2H9a2 2 0 00-2 2v1m6 4a2 2 0 01-2 2H9a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v4z" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-white mb-4">BLOG 준비 중</h1>
+            <p className="text-gray-400 leading-relaxed mb-6">
+              블로그 기능을 준비하고 있습니다.
+              <br />조금만 기다려주세요!
+            </p>
+            <Link 
+              href="/"
+              className="inline-flex items-center px-6 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-colors"
+            >
+              홈으로 돌아가기
+            </Link>
+          </div>
         </div>
       </div>
     )

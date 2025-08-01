@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// ===== 블로그 API 비활성화 =====
+const BLOG_API_ENABLED = false // true로 변경하면 API 활성화
+
 // 임시로 메모리에 저장 (실제로는 데이터베이스 사용)
 let blogPosts: BlogPost[] = [
   {
@@ -73,6 +76,17 @@ export interface BlogPost {
 
 // GET: 모든 블로그 포스트 또는 특정 조건으로 필터링
 export async function GET(request: NextRequest) {
+  // API 비활성화 상태 확인
+  if (!BLOG_API_ENABLED) {
+    return NextResponse.json(
+      { 
+        error: 'Blog API is currently disabled', 
+        message: '블로그 기능이 현재 비활성화되어 있습니다.' 
+      }, 
+      { status: 503 }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const featured = searchParams.get('featured')
   const limit = searchParams.get('limit')
@@ -95,6 +109,17 @@ export async function GET(request: NextRequest) {
 
 // POST: 새 블로그 포스트 생성
 export async function POST(request: NextRequest) {
+  // API 비활성화 상태 확인
+  if (!BLOG_API_ENABLED) {
+    return NextResponse.json(
+      { 
+        error: 'Blog API is currently disabled', 
+        message: '블로그 기능이 현재 비활성화되어 있습니다.' 
+      }, 
+      { status: 503 }
+    )
+  }
+
   try {
     const data = await request.json()
     

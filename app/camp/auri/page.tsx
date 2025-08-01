@@ -6,6 +6,9 @@ import Image from 'next/image'
 import { Calendar, MapPin, Users, Clock, ArrowLeft, Instagram, Youtube, Facebook } from 'lucide-react'
 
 export default function AuriCampPage() {
+  // ===== 블로그 기능 비활성화 =====
+  const BLOG_ENABLED = false // true로 변경하면 블로그 기능 활성화
+  
   const [activeTab, setActiveTab] = useState('overview')
   const [showApplicationModal, setShowApplicationModal] = useState(false)
 
@@ -58,7 +61,12 @@ export default function AuriCampPage() {
               <Link href="/about" className="text-gray-300 hover:text-white transition-colors text-sm">ABOUT</Link>
               <Link href="/connect-worship" className="text-gray-300 hover:text-white transition-colors text-sm">CONNECT WORSHIP</Link>
               <Link href="/camp" className="text-white font-medium text-sm">CAMP</Link>
-              <Link href="/blog" className="text-gray-300 hover:text-white transition-colors text-sm">BLOG</Link>
+              {/* BLOG - 비활성화됨 */}
+              {BLOG_ENABLED ? (
+                <Link href="/blog" className="text-gray-300 hover:text-white transition-colors text-sm">BLOG</Link>
+              ) : (
+                <span className="text-gray-500 text-sm cursor-not-allowed">BLOG (준비 중)</span>
+              )}
               <Link href="/donation" className="text-gray-300 hover:text-white transition-colors text-sm">후원</Link>
             </div>
           </div>
@@ -678,24 +686,63 @@ export default function AuriCampPage() {
       )}
 
       {/* Footer */}
-      <footer className="py-12 border-t border-gray-800">
+      <footer className="py-16 bg-black border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <span className="text-lg font-medium tracking-wide">AURI COMMUNITY</span>
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
+                  <Image
+                    src="/images/logo.png"
+                    alt="AURI COMMUNITY 로고"
+                    width={32}
+                    height={32}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span className="text-xl font-light tracking-wider">
+                  AURI COMMUNITY
+                </span>
               </div>
-              <p className="text-gray-400 text-sm">하나님의 사랑으로 하나 되는 공동체</p>
+              <p className="text-white/60 leading-relaxed font-light text-sm">
+                하나님의 사랑으로 하나 되는 공동체
+              </p>
             </div>
-            
             <div>
-              <h4 className="text-white mb-4 text-sm">CONTACT</h4>
-              <div className="space-y-2 text-gray-400 text-sm">
+              <h4 className="font-light text-white mb-6 text-sm tracking-wide">MENU</h4>
+              <div className="space-y-3">
+                <Link href="/about" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                  ABOUT
+                </Link>
+                <Link href="/connect-worship" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                  CONNECT WORSHIP
+                </Link>
+                <Link href="/camp" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                  CAMP
+                </Link>
+                {/* BLOG - 비활성화됨 */}
+                {BLOG_ENABLED ? (
+                  <Link href="/blog" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                    BLOG
+                  </Link>
+                ) : (
+                  <span className="block text-white/30 text-sm font-light cursor-not-allowed">
+                    BLOG (준비 중)
+                  </span>
+                )}
+                <Link href="/donation" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                  후원
+                </Link>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-light text-white mb-6 text-sm tracking-wide">CONTACT</h4>
+              <div className="space-y-2 text-white/60 text-sm font-light">
+                <p>서울시 강남구 테헤란로 123</p>
                 <p>02-1234-5678</p>
                 <p>auricommunity@gmail.com</p>
               </div>
             </div>
-            
             <div>
               <h4 className="font-light text-white mb-6 text-sm tracking-wide">SOCIAL</h4>
               <div className="flex space-x-4">
@@ -726,9 +773,8 @@ export default function AuriCampPage() {
               </div>
             </div>
           </div>
-          
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-            <p className="text-gray-400 text-sm">&copy; 2025 AURI COMMUNITY. All rights reserved.</p>
+          <div className="border-t border-white/10 mt-12 pt-8 text-center">
+            <p className="text-white/40 text-sm font-light">&copy; 2025 AURI & AURI COMMUNITY. All rights reserved.</p>
           </div>
         </div>
       </footer>
