@@ -56,6 +56,14 @@ function AnimatedElement({ children, delay = 0, className = "" }: {
 export default function ConnectWorshipPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  // ===== Hero Section 미디어 설정 =====
+  const heroMedia = {
+    type: "video", // "image" 또는 "video"
+    image: "/images/worship-bg-video.jpg", // 이미지일 때 또는 비디오 썸네일
+    video: "/videos/connectworshipmain.mp4", // 로컬 비디오 파일 또는 YouTube URL
+    alt: "Connect Worship 히어로 영상"
+  }
+
   // ===== Hero Section 설정 =====
   // 타이틀 위치 설정 (left, center, right)
   const TITLE_POSITION = 'left'
@@ -165,20 +173,71 @@ export default function ConnectWorshipPage() {
 
       {/* Hero Section - 배경 영상/이미지 위에 대형 타이포그래피 */}
       <section className="min-h-screen relative overflow-hidden">
-        {/* Background Video/Image */}
+        {/* Background Media */}
         <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/worship-bg-video.jpg"
-            alt="Connect Worship Background"
-            width={1920}
-            height={1080}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = '/placeholder.svg?height=1080&width=1920&text=Worship+Background';
-            }}
-          />
-          <div className="absolute inset-0 bg-black/50"></div>
+          {heroMedia.type === 'video' && heroMedia.video ? (
+            /* 비디오 배경 */
+            <div className="relative w-full h-full">
+              {heroMedia.video.includes('youtube.com') || heroMedia.video.includes('youtu.be') ? (
+                /* YouTube 비디오 */
+                <iframe
+                  src={heroMedia.video}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{
+                    pointerEvents: 'none',
+                    border: 'none'
+                  }}
+                />
+              ) : (
+                /* 로컬 비디오 파일 */
+                <>
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ pointerEvents: 'none' }}
+                  >
+                    <source src={heroMedia.video} type="video/mp4" />
+                    비디오를 로드할 수 없습니다.
+                  </video>
+                  {/* 폴백 이미지 */}
+                  <Image
+                    src={heroMedia.image}
+                    alt={heroMedia.alt}
+                    width={1920}
+                    height={1080}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ display: 'none' }}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'block';
+                    }}
+                  />
+                </>
+              )}
+              <div className="absolute inset-0 bg-black/50"></div>
+            </div>
+          ) : (
+            /* 이미지 배경 */
+            <>
+              <Image
+                src={heroMedia.image}
+                alt={heroMedia.alt}
+                width={1920}
+                height={1080}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = '/placeholder.svg?height=1080&width=1920&text=Worship+Background';
+                }}
+              />
+              <div className="absolute inset-0 bg-black/50"></div>
+            </>
+          )}
         </div>
 
         {/* Main Typography */}

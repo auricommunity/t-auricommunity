@@ -7,6 +7,7 @@ import { Calendar, MapPin, Users, Clock, ArrowLeft, Instagram, Youtube, Facebook
 
 export default function AuriCampPage() {
   const [activeTab, setActiveTab] = useState('overview')
+  const [showApplicationModal, setShowApplicationModal] = useState(false)
 
   // 모집 상태 설정 - 이 부분만 수정하면 됩니다!
   const recruitmentStatus = {
@@ -14,6 +15,10 @@ export default function AuriCampPage() {
     text: '모집 마감',
     color: 'orange' // 'green' | 'red' | 'orange' | 'blue'
   }
+
+  // 신청 기간 체크 (현재는 수동으로 설정)
+  const isApplicationPeriod = recruitmentStatus.type === 'recruiting'
+  const applicationFormUrl = "https://forms.gle/YOUR_FORM_ID" // 신청폼 링크
 
   // 상태별 스타일 설정
   const getStatusStyle = () => {
@@ -196,7 +201,7 @@ export default function AuriCampPage() {
                 </div>
                 <div className="lg:w-3/5">
                   <Image
-                    src="/images/auri-camp-main.jpg"
+                    src="/images/auricamp people.jpg"
                     alt="AURI 캠프"
                     width={900}
                     height={700}
@@ -212,70 +217,67 @@ export default function AuriCampPage() {
           )}
 
           {/* Program Tab */}
-          {activeTab === 'program' && (
-            <div className="space-y-12">
-              <h2 className="text-2xl font-bold text-white">프로그램 특징</h2>
-              
-              <div className="grid md:grid-cols-3 gap-8">
-                <div className="space-y-4">
-                  <Image
-                    src="/images/program-1.jpg"
-                    alt="말씀 프로그램"
-                    width={300}
-                    height={200}
-                    className="w-full rounded-lg object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/placeholder.svg?height=200&width=300&text=말씀+프로그램';
-                    }}
-                  />
-                  <h3 className="text-lg font-semibold text-white">말씀 중심 프로그램</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    매일 3회의 집회를 통해 하나님의 말씀을 깊이 있게 나누고, 
-                    개인 QT 시간을 통해 말씀을 묵상합니다.
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <Image
-                    src="/images/program-2.jpg"
-                    alt="찬양과 워십"
-                    width={300}
-                    height={200}
-                    className="w-full rounded-lg object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/placeholder.svg?height=200&width=300&text=찬양+워십';
-                    }}
-                  />
-                  <h3 className="text-lg font-semibold text-white">찬양과 워십</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    전문 찬양팀과 함께하는 역동적인 워십 타임으로 
-                    하나님께 마음껏 찬양을 올려드립니다.
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <Image
-                    src="/images/program-3.jpg"
-                    alt="공동체 활동"
-                    width={300}
-                    height={200}
-                    className="w-full rounded-lg object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/placeholder.svg?height=200&width=300&text=공동체+활동';
-                    }}
-                  />
-                  <h3 className="text-lg font-semibold text-white">공동체 활동</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    소그룹 나눔과 야외 활동을 통해 건강한 공동체의 
-                    가치를 배우고 실천합니다.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
+                    {activeTab === 'program' && (
+                      <div className="space-y-12">
+                        <h2 className="text-2xl font-bold text-white">프로그램 특징</h2>
+                        
+                        <div className="grid md:grid-cols-3 gap-8">
+                          <div className="space-y-4">
+                            <Image
+                              src="/images/auricampprogram-1.jpg"
+                              alt="andcamp 말씀 프로그램"
+                              width={300}
+                              height={200}
+                              className="w-full rounded-lg object-cover"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = '/placeholder.svg?height=200&width=300&text=말씀+프로그램';
+                              }}
+                            />
+                            <h3 className="text-lg font-semibold text-white">말씀 중심 프로그램</h3>
+                            <p className="text-gray-400 text-sm leading-relaxed">
+                              놀이와 결합한 말씀 중심 프로그램으로 하나님께 가까이 나아갑니다.
+                            </p>
+                          </div>
+          
+                          <div className="space-y-4">
+                            <Image
+                              src="/images/auricampprogram-2.jpg"
+                              alt="andcamp 찬양과 워십"
+                              width={300}
+                              height={200}
+                              className="w-full rounded-lg object-cover"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = '/placeholder.svg?height=200&width=300&text=찬양+워십';
+                              }}
+                            />
+                            <h3 className="text-lg font-semibold text-white">찬양과 워십</h3>
+                            <p className="text-gray-400 text-sm leading-relaxed">
+                              Connect Worship팀과 함께 하나님께 마음껏 찬양을 올려드립니다.
+                            </p>
+                          </div>
+          
+                          <div className="space-y-4">
+                            <Image
+                              src="/images/auricampprogram-3.jpg"
+                              alt="andcamp 공동체 활동"
+                              width={300}
+                              height={200}
+                              className="w-full rounded-lg object-cover"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = '/placeholder.svg?height=200&width=300&text=공동체+활동';
+                              }}
+                            />
+                            <h3 className="text-lg font-semibold text-white">진심으로 다가가는 시간</h3>
+                            <p className="text-gray-400 text-sm leading-relaxed">
+                              진심으로 드리는 예배를 통해 하나님께 더 가까이 나아갑니다.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
 
           {/* Schedule Tab */}
           {activeTab === 'schedule' && (
@@ -327,17 +329,16 @@ export default function AuriCampPage() {
               <div className="grid md:grid-cols-2 gap-12">
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-xl font-semibold text-white mb-4">AURI 수련원</h3>
+                    <h3 className="text-xl font-semibold text-white mb-4">미정</h3>
                     <div className="space-y-3 text-gray-300">
                       <p className="flex items-start space-x-2">
                         <MapPin className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                        <span>강원도 평창군 대관령면 수련원길 123</span>
+                        <span>미정</span>
                       </p>
-                      <p>📞 033-1234-5678</p>
-                      <p>🚗 서울에서 차로 2시간 30분 거리</p>
+                      <p>🚗 준비중입니다.</p>
                     </div>
                   </div>
-
+                  {/*
                   <div className="space-y-4">
                     <h4 className="text-lg font-semibold text-white">시설 안내</h4>
                     <div className="space-y-3 text-gray-300 text-sm">
@@ -376,7 +377,7 @@ export default function AuriCampPage() {
                         <span className="ml-2">네비 "강원도 평창군 AURI 수련원" 검색</span>
                       </div>
                     </div>
-                  </div>
+                  </div>*/}
                 </div>
 
                 <div className="space-y-6">
@@ -578,16 +579,103 @@ export default function AuriCampPage() {
           <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
             하나님의 사랑을 경험하고 평생 잊지 못할 추억을 만들어갈 특별한 경험이 여러분을 기다리고 있습니다.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-colors">
+          <div className="flex justify-center">
+            <button 
+              onClick={() => setShowApplicationModal(true)}
+              className="px-8 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-colors"
+            >
               지금 신청하기
-            </button>
-            <button className="px-8 py-3 border border-gray-600 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors">
-              상담 문의하기
             </button>
           </div>
         </div>
       </section>
+
+      {/* Application Modal */}
+      {showApplicationModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gray-900 rounded-lg max-w-md w-full p-6 border border-gray-700">
+            <div className="text-center space-y-6">
+              <h3 className="text-xl font-bold text-white">AURI 캠프 신청</h3>
+              
+              {isApplicationPeriod ? (
+                <div className="space-y-4">
+                  <div className="bg-green-900/30 border border-green-600 rounded-lg p-4">
+                    <div className="flex items-center justify-center space-x-2 mb-2">
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                      <span className="text-green-400 font-medium">신청 가능</span>
+                    </div>
+                    <p className="text-gray-300 text-sm">
+                      현재 AURI 캠프 신청을 받고 있습니다!
+                    </p>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button
+                      onClick={() => {
+                        window.open(applicationFormUrl, '_blank')
+                        setShowApplicationModal(false)
+                      }}
+                      className="flex-1 px-6 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-colors"
+                    >
+                      신청폼 작성하기
+                    </button>
+                    <button
+                      onClick={() => setShowApplicationModal(false)}
+                      className="flex-1 px-6 py-3 border border-gray-600 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
+                    >
+                      닫기
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="bg-orange-900/30 border border-orange-600 rounded-lg p-4">
+                    <div className="flex items-center justify-center space-x-2 mb-2">
+                      <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                      <span className="text-orange-400 font-medium">신청 기간 아님</span>
+                    </div>
+                    <p className="text-gray-300 text-sm">
+                      지금은 신청기간이 아닙니다.
+                      <br />다음 신청 기간을 기다려주세요.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <p className="text-gray-400 text-sm">
+                      신청 시작 알림을 받고 싶으시다면 SNS를 팔로우해주세요!
+                    </p>
+                    <div className="flex justify-center space-x-4">
+                      <a 
+                        href="https://www.instagram.com/auri_community/" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform"
+                      >
+                        <Instagram className="w-5 h-5 text-white" />
+                      </a>
+                      <a 
+                        href="https://www.youtube.com/@AURICOMMUNITY" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center hover:scale-110 transition-transform"
+                      >
+                        <Youtube className="w-5 h-5 text-white" />
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <button
+                    onClick={() => setShowApplicationModal(false)}
+                    className="w-full px-6 py-3 border border-gray-600 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
+                  >
+                    확인
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="py-12 border-t border-gray-800">
