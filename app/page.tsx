@@ -7,6 +7,9 @@ import Image from "next/image"
 import { BlogPost } from './api/blog/route'
 
 export default function HomePage() {
+  // ===== 블로그 기능 비활성화 =====
+  const BLOG_ENABLED = false // true로 변경하면 블로그 기능 활성화
+  
   const [currentSlide, setCurrentSlide] = useState(0)
   const [slideProgress, setSlideProgress] = useState([0, 0, 0])
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([])
@@ -72,10 +75,14 @@ export default function HomePage() {
   const SLIDE_DURATION = 5000
 
   useEffect(() => {
-    fetchFeaturedPosts()
+    if (BLOG_ENABLED) {
+      fetchFeaturedPosts()
+    }
   }, [])
 
   const fetchFeaturedPosts = async () => {
+    if (!BLOG_ENABLED) return
+    
     try {
       const response = await fetch('/api/blog?featured=true&limit=3')
       const data = await response.json()
@@ -135,7 +142,7 @@ export default function HomePage() {
       <nav className="fixed top-0 w-full bg-transparent backdrop-blur-sm z-50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+            <Link href="/" className="flex items-center space-x-3">
               <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
                 <Image
                   src="/images/logo.png" // 로고 이미지 경로
@@ -148,7 +155,7 @@ export default function HomePage() {
               <span className="text-xl font-light tracking-wider">
                 AURI COMMUNITY
               </span>
-            </div>
+            </Link>
             <div className="hidden md:flex items-center space-x-12">
               <Link
                 href="/about"
@@ -168,12 +175,19 @@ export default function HomePage() {
               >
                 CAMP
               </Link>
-              <Link
-                href="/blog"
-                className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
-              >
-                BLOG
-              </Link>
+              {/* BLOG - 비활성화됨 */}
+              {BLOG_ENABLED ? (
+                <Link
+                  href="/blog"
+                  className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                >
+                  BLOG
+                </Link>
+              ) : (
+                <span className="text-white/30 text-sm font-light tracking-wide cursor-not-allowed">
+                  BLOG (준비 중)
+                </span>
+              )}
               <Link
                 href="/donation"
                 className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
@@ -224,13 +238,20 @@ export default function HomePage() {
                 >
                   CAMP
                 </Link>
-                <Link
-                  href="/blog"
-                  className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  BLOG
-                </Link>
+                {/* BLOG - 비활성화됨 */}
+                {BLOG_ENABLED ? (
+                  <Link
+                    href="/blog"
+                    className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    BLOG
+                  </Link>
+                ) : (
+                  <span className="text-white/30 text-sm font-light tracking-wide cursor-not-allowed">
+                    BLOG (준비 중)
+                  </span>
+                )}
                 <Link
                   href="/donation"
                   className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
@@ -411,74 +432,76 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Blog Posts */}
-      <section className="py-20 bg-zinc-900">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-thin tracking-wide text-white mb-4">
-              Latest Stories
-            </h2>
-            <p className="text-white/60 font-light">
-              AURI 공동체와 함께하는 특별한 이야기들
-            </p>
-          </div>
+      {/* Featured Blog Posts - 비활성화됨 */}
+      {BLOG_ENABLED && (
+        <section className="py-20 bg-zinc-900">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-thin tracking-wide text-white mb-4">
+                Latest Stories
+              </h2>
+              <p className="text-white/60 font-light">
+                AURI 공동체와 함께하는 특별한 이야기들
+              </p>
+            </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {postsLoading ? (
-              Array.from({ length: 3 }).map((_, index) => (
-                <div key={index} className="animate-pulse">
-                  <div className="bg-white/10 h-64 mb-4 rounded"></div>
-                  <div className="space-y-3">
-                    <div className="bg-white/10 h-4 w-24 rounded"></div>
-                    <div className="bg-white/10 h-6 w-full rounded"></div>
-                    <div className="bg-white/10 h-4 w-3/4 rounded"></div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {postsLoading ? (
+                Array.from({ length: 3 }).map((_, index) => (
+                  <div key={index} className="animate-pulse">
+                    <div className="bg-white/10 h-64 mb-4 rounded"></div>
+                    <div className="space-y-3">
+                      <div className="bg-white/10 h-4 w-24 rounded"></div>
+                      <div className="bg-white/10 h-6 w-full rounded"></div>
+                      <div className="bg-white/10 h-4 w-3/4 rounded"></div>
+                    </div>
                   </div>
-                </div>
-              ))
-            ) : featuredPosts.length > 0 ? (
-              featuredPosts.map((post) => (
-                <Link key={post.id} href={`/blog/${post.slug}`}>
-                  <article className="group cursor-pointer">
-                    {post.imageUrl && (
-                      <div className="relative overflow-hidden mb-4">
-                        <Image
-                          src={post.imageUrl}
-                          alt={post.title}
-                          width={400}
-                          height={300}
-                          className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"></div>
-                        <div className="absolute top-4 left-4">
-                          <span className="bg-white/90 text-black px-3 py-1 text-xs font-medium rounded-full">
-                            {post.category}
-                          </span>
+                ))
+              ) : featuredPosts.length > 0 ? (
+                featuredPosts.map((post) => (
+                  <Link key={post.id} href={`/blog/${post.slug}`}>
+                    <article className="group cursor-pointer">
+                      {post.imageUrl && (
+                        <div className="relative overflow-hidden mb-4">
+                          <Image
+                            src={post.imageUrl}
+                            alt={post.title}
+                            width={400}
+                            height={300}
+                            className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"></div>
+                          <div className="absolute top-4 left-4">
+                            <span className="bg-white/90 text-black px-3 py-1 text-xs font-medium rounded-full">
+                              {post.category}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                      <div className="space-y-2">
+                        <h3 className="text-xl font-light text-white group-hover:text-white/80 transition-colors duration-300">
+                          {post.title}
+                        </h3>
+                        <p className="text-white/60 text-sm leading-relaxed">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center justify-between text-xs text-white/40">
+                          <span>{formatDate(post.publishedAt)}</span>
+                          <span>{post.author}</span>
                         </div>
                       </div>
-                    )}
-                    <div className="space-y-2">
-                      <h3 className="text-xl font-light text-white group-hover:text-white/80 transition-colors duration-300">
-                        {post.title}
-                      </h3>
-                      <p className="text-white/60 text-sm leading-relaxed">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center justify-between text-xs text-white/40">
-                        <span>{formatDate(post.publishedAt)}</span>
-                        <span>{post.author}</span>
-                      </div>
-                    </div>
-                  </article>
-                </Link>
-              ))
-            ) : (
-              <div className="col-span-full text-center py-16">
-                <p className="text-white/60">아직 게시된 콘텐츠가 없습니다.</p>
-              </div>
-            )}
+                    </article>
+                  </Link>
+                ))
+              ) : (
+                <div className="col-span-full text-center py-16">
+                  <p className="text-white/60">아직 게시된 콘텐츠가 없습니다.</p>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Donation Section */}
       <section className="py-20 bg-black border-t border-white/10">
@@ -537,9 +560,16 @@ export default function HomePage() {
                 <Link href="/camp" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
                   CAMP
                 </Link>
-                <Link href="/blog" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
-                  BLOG
-                </Link>
+                {/* BLOG - 비활성화됨 */}
+                {BLOG_ENABLED ? (
+                  <Link href="/blog" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                    BLOG
+                  </Link>
+                ) : (
+                  <span className="block text-white/30 text-sm font-light cursor-not-allowed">
+                    BLOG (준비 중)
+                  </span>
+                )}
                 <Link href="/donation" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
                   후원
                 </Link>

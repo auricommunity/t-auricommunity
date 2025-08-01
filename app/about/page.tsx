@@ -12,6 +12,7 @@ function TypingAnimation({ text, className = "", speed = 50, delay = 0 }: { text
   const [hasStarted, setHasStarted] = useState(false)
   const elementRef = useRef<HTMLDivElement>(null)
 
+  
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -155,7 +156,7 @@ function FadeInAnimation({ children, delay = 0, direction = "up", duration = 600
 export default function AboutPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  
+  const BLOG_ENABLED = false
   // 자동전환 설정 (true: 켜기, false: 끄기)
   const AUTO_PLAY_ENABLED = true
   // 전환 시간 설정 (밀리초, 3500 = 3.5초)
@@ -202,21 +203,55 @@ export default function AboutPage() {
             <Link href="/" className="flex items-center space-x-3">
               <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo.png" // 로고 이미지 경로
                   alt="AURI COMMUNITY 로고"
                   width={32}
                   height={32}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <span className="text-xl font-light tracking-wider">AURI COMMUNITY</span>
+              <span className="text-xl font-light tracking-wider">
+                AURI COMMUNITY
+              </span>
             </Link>
             <div className="hidden md:flex items-center space-x-12">
-              <Link href="/about" className="text-white hover:text-white/80 transition-all duration-300 text-sm font-light tracking-wide">ABOUT</Link>
-              <Link href="/connect-worship" className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide">CONNECT WORSHIP</Link>
-              <Link href="/camp" className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide">CAMP</Link>
-              <Link href="/blog" className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide">BLOG</Link>
-              <Link href="/donation" className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide">후원</Link>
+              <Link
+                href="/about"
+                className="text-white hover:text-white/80 transition-all duration-300 text-sm font-light tracking-wide"
+              >
+                ABOUT
+              </Link>
+              <Link
+                href="/connect-worship"
+                className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+              >
+                CONNECT WORSHIP
+              </Link>
+              <Link
+                href="/camp"
+                className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+              >
+                CAMP
+              </Link>
+              {/* BLOG - 비활성화됨 */}
+              {BLOG_ENABLED ? (
+                <Link
+                  href="/blog"
+                  className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                >
+                  BLOG
+                </Link>
+              ) : (
+                <span className="text-white/30 text-sm font-light tracking-wide cursor-not-allowed">
+                  BLOG (준비 중)
+                </span>
+              )}
+              <Link
+                href="/donation"
+                className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+              >
+                후원
+              </Link>
             </div>
             
             {/* 모바일 메뉴 버튼 */}
@@ -261,13 +296,20 @@ export default function AboutPage() {
                 >
                   CAMP
                 </Link>
-                <Link
-                  href="/blog"
-                  className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  BLOG
-                </Link>
+                {/* BLOG - 비활성화됨 */}
+                {BLOG_ENABLED ? (
+                  <Link
+                    href="/blog"
+                    className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    BLOG
+                  </Link>
+                ) : (
+                  <span className="text-white/30 text-sm font-light tracking-wide cursor-not-allowed">
+                    BLOG (준비 중)
+                  </span>
+                )}
                 <Link
                   href="/donation"
                   className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
@@ -650,8 +692,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* Organization Section */}
+      {/* Organization Section
       <section className="py-24 bg-black">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <SlideUpAnimation>
@@ -708,50 +749,66 @@ export default function AboutPage() {
           </FadeInAnimation>
         </div>
       </section>
+      */}
 
       {/* Footer */}
       <footer className="py-16 bg-black border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <FadeInAnimation>
-              <div>
-                <div className="flex items-center space-x-3 mb-6">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
-                    <Image
-                      src="/images/logo.png"
-                      alt="AURI COMMUNITY 로고"
-                      width={32}
-                      height={32}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <span className="text-xl font-light tracking-wider">AURI COMMUNITY</span>
+            <div>
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
+                  <Image
+                    src="/images/logo.png"
+                    alt="AURI COMMUNITY 로고"
+                    width={32}
+                    height={32}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <p className="text-white/60 leading-relaxed font-light text-sm">하나님의 사랑으로 하나 되는 공동체</p>
+                <span className="text-xl font-light tracking-wider">
+                  AURI COMMUNITY
+                </span>
               </div>
-            </FadeInAnimation>
-            <FadeInAnimation delay={200}>
-              <div>
-                <h4 className="font-light text-white mb-6 text-sm tracking-wide">MENU</h4>
-                <div className="space-y-3">
-                  <Link href="/about" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">ABOUT</Link>
-                  <Link href="/connect-worship" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">CONNECT WORSHIP</Link>
-                  <Link href="/camp" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">CAMP</Link>
-                  <Link href="/blog" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">BLOG</Link>
-                  <Link href="/donation" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">후원</Link>
-                </div>
+              <p className="text-white/60 leading-relaxed font-light text-sm">
+                하나님의 사랑으로 하나 되는 공동체
+              </p>
+            </div>
+            <div>
+              <h4 className="font-light text-white mb-6 text-sm tracking-wide">MENU</h4>
+              <div className="space-y-3">
+                <Link href="/about" className="block text-white hover:text-white/60 transition-colors duration-300 text-sm font-light">
+                  ABOUT
+                </Link>
+                <Link href="/connect-worship" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                  CONNECT WORSHIP
+                </Link>
+                <Link href="/camp" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                  CAMP
+                </Link>
+                {/* BLOG - 비활성화됨 */}
+                {BLOG_ENABLED ? (
+                  <Link href="/blog" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                    BLOG
+                  </Link>
+                ) : (
+                  <span className="block text-white/30 text-sm font-light cursor-not-allowed">
+                    BLOG (준비 중)
+                  </span>
+                )}
+                <Link href="/donation" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                  후원
+                </Link>
               </div>
-            </FadeInAnimation>
-            <FadeInAnimation delay={400}>
-              <div>
-                <h4 className="font-light text-white mb-6 text-sm tracking-wide">CONTACT</h4>
-                <div className="space-y-2 text-white/60 text-sm font-light">
-                  <p>02-1234-5678</p>
-                  <p>auricommunity@gmail.com</p>
-                </div>
+            </div>
+            <div>
+              <h4 className="font-light text-white mb-6 text-sm tracking-wide">CONTACT</h4>
+              <div className="space-y-2 text-white/60 text-sm font-light">
+                <p>서울시 강남구 테헤란로 123</p>
+                <p>02-1234-5678</p>
+                <p>auricommunity@gmail.com</p>
               </div>
-            </FadeInAnimation>
-            <FadeInAnimation delay={600}>
+            </div>
             <div>
               <h4 className="font-light text-white mb-6 text-sm tracking-wide">SOCIAL</h4>
               <div className="flex space-x-4">
@@ -781,13 +838,10 @@ export default function AboutPage() {
                 </a>
               </div>
             </div>
-            </FadeInAnimation>
           </div>
-          <FadeInAnimation delay={800}>
-            <div className="border-t border-white/10 mt-12 pt-8 text-center">
-              <p className="text-white/40 text-sm font-light">&copy; 2025 AURI & AURI COMMUNITY. All rights reserved.</p>
-            </div>
-          </FadeInAnimation>
+          <div className="border-t border-white/10 mt-12 pt-8 text-center">
+            <p className="text-white/40 text-sm font-light">&copy; 2025 AURI & AURI COMMUNITY. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </div>

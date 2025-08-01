@@ -1,0 +1,22 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/blog"
+public_folder: "/images/blog"
+
+collections:
+  - name: "blog"
+    label: "블로그"
+    folder: "content/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "제목", name: "title", widget: "string"}
+      - {label: "요약", name: "excerpt", widget: "string"}
+      - {label: "카테고리", name: "category", widget: "select", options: ["리뷰", "인터뷰", "이벤트"]}
+      - {label: "작성자", name: "author", widget: "string", default: "AURI COMMUNITY"}
+      - {label: "추천글", name: "featured", widget: "boolean", default: false}
+      - {label: "대표 이미지", name: "image", widget: "image"}
+      - {label: "발행일", name: "date", widget: "datetime"}
+      - {label: "내용", name: "body", widget: "markdown"}

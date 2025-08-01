@@ -8,7 +8,8 @@ import { Instagram, Youtube, Facebook } from 'lucide-react'
 export default function DonationPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [copyToast, setCopyToast] = useState(false)
-  
+  const BLOG_ENABLED = false
+
   const bankAccounts = [
     {
       bank: "카카오뱅크",
@@ -36,7 +37,7 @@ export default function DonationPage() {
             <Link href="/" className="flex items-center space-x-3">
               <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo.png" // 로고 이미지 경로
                   alt="AURI COMMUNITY 로고"
                   width={32}
                   height={32}
@@ -66,12 +67,19 @@ export default function DonationPage() {
               >
                 CAMP
               </Link>
-              <Link
-                href="/blog"
-                className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
-              >
-                BLOG
-              </Link>
+              {/* BLOG - 비활성화됨 */}
+              {BLOG_ENABLED ? (
+                <Link
+                  href="/blog"
+                  className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                >
+                  BLOG
+                </Link>
+              ) : (
+                <span className="text-white/30 text-sm font-light tracking-wide cursor-not-allowed">
+                  BLOG (준비 중)
+                </span>
+              )}
               <Link
                 href="/donation"
                 className="text-white hover:text-white/80 transition-all duration-300 text-sm font-light tracking-wide"
@@ -122,13 +130,20 @@ export default function DonationPage() {
                 >
                   CAMP
                 </Link>
-                <Link
-                  href="/blog"
-                  className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  BLOG
-                </Link>
+                {/* BLOG - 비활성화됨 */}
+                {BLOG_ENABLED ? (
+                  <Link
+                    href="/blog"
+                    className="text-white/70 hover:text-white transition-all duration-300 text-sm font-light tracking-wide"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    BLOG
+                  </Link>
+                ) : (
+                  <span className="text-white/30 text-sm font-light tracking-wide cursor-not-allowed">
+                    BLOG (준비 중)
+                  </span>
+                )}
                 <Link
                   href="/donation"
                   className="text-white hover:text-white/80 transition-all duration-300 text-sm font-light tracking-wide"
@@ -342,10 +357,17 @@ export default function DonationPage() {
                 <Link href="/camp" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
                   CAMP
                 </Link>
-                <Link href="/blog" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
-                  BLOG
-                </Link>
-                <Link href="/donation" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                {/* BLOG - 비활성화됨 */}
+                {BLOG_ENABLED ? (
+                  <Link href="/blog" className="block text-white/60 hover:text-white transition-colors duration-300 text-sm font-light">
+                    BLOG
+                  </Link>
+                ) : (
+                  <span className="block text-white/30 text-sm font-light cursor-not-allowed">
+                    BLOG (준비 중)
+                  </span>
+                )}
+                <Link href="/donation" className="block text-white hover:text-white/60 transition-colors duration-300 text-sm font-light">
                   후원
                 </Link>
               </div>
@@ -355,14 +377,14 @@ export default function DonationPage() {
               <div className="space-y-2 text-white/60 text-sm font-light">
                 <p>서울시 강남구 테헤란로 123</p>
                 <p>02-1234-5678</p>
-                <p>info@auricommunity.org</p>
+                <p>auricommunity@gmail.com</p>
               </div>
             </div>
             <div>
               <h4 className="font-light text-white mb-6 text-sm tracking-wide">SOCIAL</h4>
               <div className="flex space-x-4">
                 <a 
-                  href="https://instagram.com/auri_community" 
+                  href="https://www.instagram.com/auri_community/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
@@ -370,7 +392,7 @@ export default function DonationPage() {
                   <Instagram className="w-4 h-4" />
                 </a>
                 <a 
-                  href="https://youtube.com/@auricommunity" 
+                  href="https://www.youtube.com/@AURICOMMUNITY" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
@@ -378,7 +400,7 @@ export default function DonationPage() {
                   <Youtube className="w-4 h-4" />
                 </a>
                 <a 
-                  href="https://facebook.com/auricommunity" 
+                  href="https://www.facebook.com/p/%EC%95%84%EC%9A%B0%EB%A6%AC%EA%B3%B5%EB%8F%99%EC%B2%B4-100077341464707/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-300"
