@@ -3,9 +3,16 @@
 import { useState } from "react"
 import Link from 'next/link'
 import Image from 'next/image'
+import { Instagram, Youtube, Facebook, X } from 'lucide-react'
 
 export default function CampPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showApplicationModal, setShowApplicationModal] = useState(false)
+  const [showInquiryModal, setShowInquiryModal] = useState(false)
+
+  // 신청 기간 설정 (AURI 캠프 기준)
+  const isApplicationPeriod = false // true로 변경하면 신청 가능
+  const applicationFormUrl = "https://forms.gle/YOUR_FORM_ID" // 실제 신청폼 링크
   
   // ===== 캠프 카드 설정 =====
   // 상태별 색상 설정 (쉽게 수정 가능)
@@ -41,30 +48,30 @@ export default function CampPage() {
     {
       id: 1,
       title: "AURI 캠프",
-      subtitle: "하나님의 사랑 안에서 하나 되는",
+      subtitle: "하나님의 사랑 안에서 하나 되는 다음세대",
       period: "매년 여름/겨울",
-      location: "강원도 평창",
-      participants: "초등~고등학생",
+      location: "미정",
+      participants: "중학생~고등학생",
       price: "문의",
       status: "정기캠프",
       slug: "auri",
       description: "AURI 공동체의 대표 정기 캠프로, 다음세대를 위한 특별한 영적 성장의 시간입니다.",
       features: ["말씀 집회", "찬양 워십", "공동체 활동", "개인 기도 시간"],
-      image: "/placeholder.svg?height=300&width=400"
+      image: "/images/auricamp main.jpg?height=300&width=400"
     },
     {
       id: 2,
       title: "AND 캠프",
       subtitle: "And 함께하는 은혜의 시간",
       period: "과거 진행 (현재 중단)",
-      location: "경기도 양평",
-      participants: "초등~고등학생",
+      location: "가평 힐링캠프",
+      participants: "중학생~고등학생",
       price: "-",
       status: "지난캠프",
       slug: "and",
-      description: "과거 AURI에서 진행했던 캠프로, 소중한 추억과 은혜가 담긴 특별한 시간이었습니다.",
+      description: "2024년, AURI는 10년의 걸음을 돌아보며, 단 한 번의 특별한 캠프, AND를 열었습니다.",
       features: ["말씀 나눔", "공동체 교제", "자연 체험", "문화 활동"],
-      image: "/placeholder.svg?height=300&width=400"
+      image: "/images/andcamp main.jpg?height=300&width=400"
     },
   ]
 
@@ -407,15 +414,195 @@ export default function CampPage() {
             하나님의 사랑 안에서 성장하고 소중한 추억을 만들어가는 특별한 시간에 초대합니다.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-black px-8 py-3 font-light hover:bg-gray-100 transition-colors">
+            <button 
+              onClick={() => setShowApplicationModal(true)}
+              className="bg-white text-black px-8 py-3 font-light hover:bg-gray-100 transition-colors"
+            >
               캠프 신청
             </button>
-            <button className="border border-white/30 text-white px-8 py-3 font-light hover:border-white/50 transition-colors">
+            <button 
+              onClick={() => setShowInquiryModal(true)}
+              className="border border-white/30 text-white px-8 py-3 font-light hover:border-white/50 transition-colors"
+            >
               캠프 문의
             </button>
           </div>
         </div>
       </section>
+
+      {/* Application Modal */}
+      {showApplicationModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gray-900 rounded-lg max-w-md w-full p-6 border border-gray-700">
+            <div className="text-center space-y-6">
+              <h3 className="text-xl font-bold text-white">캠프 신청</h3>
+              
+              {isApplicationPeriod ? (
+                <div className="space-y-4">
+                  <div className="bg-green-900/30 border border-green-600 rounded-lg p-4">
+                    <div className="flex items-center justify-center space-x-2 mb-2">
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                      <span className="text-green-400 font-medium">신청 가능</span>
+                    </div>
+                    <p className="text-gray-300 text-sm">
+                      현재 AURI 캠프 신청을 받고 있습니다!
+                    </p>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button
+                      onClick={() => {
+                        window.open(applicationFormUrl, '_blank')
+                        setShowApplicationModal(false)
+                      }}
+                      className="flex-1 px-6 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-colors"
+                    >
+                      신청폼 작성하기
+                    </button>
+                    <button
+                      onClick={() => setShowApplicationModal(false)}
+                      className="flex-1 px-6 py-3 border border-gray-600 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
+                    >
+                      닫기
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="bg-orange-900/30 border border-orange-600 rounded-lg p-4">
+                    <div className="flex items-center justify-center space-x-2 mb-2">
+                      <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                      <span className="text-orange-400 font-medium">신청 기간 아님</span>
+                    </div>
+                    <p className="text-gray-300 text-sm">
+                      지금은 신청기간이 아닙니다.
+                      <br />다음 신청 기간을 기다려주세요.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <p className="text-gray-400 text-sm">
+                      신청 시작 알림을 받고 싶으시다면 SNS를 팔로우해주세요!
+                    </p>
+                    <div className="flex justify-center space-x-4">
+                      <a 
+                        href="https://www.instagram.com/auri_community/" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform"
+                      >
+                        <Instagram className="w-5 h-5 text-white" />
+                      </a>
+                      <a 
+                        href="https://www.youtube.com/@AURICOMMUNITY" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center hover:scale-110 transition-transform"
+                      >
+                        <Youtube className="w-5 h-5 text-white" />
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <button
+                    onClick={() => setShowApplicationModal(false)}
+                    className="w-full px-6 py-3 border border-gray-600 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
+                  >
+                    확인
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Inquiry Modal */}
+      {showInquiryModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gray-900 rounded-lg max-w-md w-full p-6 border border-gray-700">
+            <div className="text-center space-y-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-bold text-white">캠프 문의</h3>
+                <button
+                  onClick={() => setShowInquiryModal(false)}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              <div className="bg-blue-900/30 border border-blue-600 rounded-lg p-4">
+                <div className="flex items-center justify-center space-x-2 mb-2">
+                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                  <span className="text-blue-400 font-medium">문의 가능</span>
+                </div>
+                <p className="text-gray-300 text-sm">
+                  캠프에 대해 궁금한 점이 있으시면
+                  <br />언제든지 문의해주세요!
+                </p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <a
+                    href="tel:010-4820-9155"
+                    className="flex items-center justify-center space-x-2 px-4 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <span className="text-sm">전화문의</span>
+                  </a>
+                  <a
+                    href="mailto:auricommunity@gmail.com"
+                    className="flex items-center justify-center space-x-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span className="text-sm">이메일</span>
+                  </a>
+                </div>
+                
+                <div className="space-y-3">
+                  <p className="text-gray-400 text-sm font-medium">SNS 메신저로 문의</p>
+                  <div className="flex justify-center space-x-4">
+                    <a 
+                      href="https://www.instagram.com/auri_community/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center hover:scale-110 transition-transform"
+                    >
+                      <Instagram className="w-6 h-6 text-white" />
+                    </a>
+                    <a 
+                      href="https://www.facebook.com/p/%EC%95%84%EC%9A%B0%EB%A6%AC%EA%B3%B5%EB%8F%99%EC%B2%B4-100077341464707/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center hover:scale-110 transition-transform"
+                    >
+                      <Facebook className="w-6 h-6 text-white" />
+                    </a>
+                  </div>
+                  <p className="text-gray-500 text-xs">
+                    DM으로 문의하시면 빠른 답변을 받으실 수 있습니다
+                  </p>
+                </div>
+                
+                <div className="bg-gray-800 rounded-lg p-4 text-left">
+                  <h4 className="text-white font-medium mb-2 text-sm">📞 전화 문의 시간</h4>
+                  <div className="space-y-1 text-gray-300 text-xs">
+                    <p>평일: 오전 10시 ~ 오후 6시</p>
+                    <p>주말: 오후 2시 ~ 오후 5시</p>
+                    <p className="text-orange-400 mt-1">* 공휴일 휴무</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="py-16 bg-black border-t border-white/10">
@@ -459,7 +646,7 @@ export default function CampPage() {
               <div className="space-y-2 text-white/60 text-sm font-light">
                 <p>서울시 강남구 테헤란로 123</p>
                 <p>02-1234-5678</p>
-                <p>info@auricommunity.org</p>
+                <p>auricommunity@gmail.com</p>
               </div>
             </div>
             <div>

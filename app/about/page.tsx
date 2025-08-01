@@ -650,8 +650,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* Organization Section */}
+      {/* Organization Section
       <section className="py-24 bg-black">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <SlideUpAnimation>
@@ -708,6 +707,7 @@ export default function AboutPage() {
           </FadeInAnimation>
         </div>
       </section>
+      */}
 
       {/* Footer */}
       <footer className="py-16 bg-black border-t border-white/10">
